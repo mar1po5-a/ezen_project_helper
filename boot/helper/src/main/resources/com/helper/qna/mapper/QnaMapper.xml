@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd ">
+<mapper namespace="com.helper.qna.mapper.QnaMapper">
+	<select id="getTotalRow" resultType="Long"> SELECT COUNT(*) FROM question </select>
+	<select id="list" resultType="com.helper.question.vo.QuestionVO"> SELECT rnum, question_no, title, member_id, created_at FROM( SELECT rownum rnum, question_no, title, member_id, created_at FROM( SELECT question_no, title, member_id, created_at FROM question ORDER BY question_no DESC ) ) WHERE rnum BETWEEN #{startRow} AND #{endRow} </select>
+	<select id="questionView" resultType="com.helper.question.vo.QuestionVO"> SELECT question_no, title, content, member_id, created_at FROM question WHERE question_no = #{question_no} </select>
+	<insert id="questionWrite"> INSERT INTO question (title, content, member_id) VALUES(#{title}, #{content}, #{member_id}) </insert>
+	<update id="questionUpdate"> UPDATE question SET title = #{title}, content = #{content} WHERE question_no = #{question_no} and member_id = #{member_id} </update>
+	<delete id="questionDelete"> DELETE FROM question WHERE question_no = #{question_no} and member_id = #{member_id} </delete>
+	<delete id="questionDelete2"> DELETE FROM question WHERE question_no = #{question_no} </delete>
+	<select id="answerView" resultType="com.helper.answer.vo.AnswerVO"> SELECT question_no, content, created_at FROM answer WHERE question_no = #{question_no} </select>
+	<insert id="answerWrite"> INSERT INTO answer (question_no, content) VALUES(#{question_no}, #{content}) </insert>
+	<update id="answerUpdate"> UPDATE answer SET question_no = #{question_no}, content = #{content} WHERE question_no = #{question_no}</update>
+	<delete id="answerDelete"> DELETE FROM answer WHERE question_no = #{question_no} </delete>
+</mapper>
